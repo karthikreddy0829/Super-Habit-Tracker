@@ -1,13 +1,12 @@
-
-import React, { useState, useEffect, useCallback, useMemo } from 'react';
-import { Layout, CheckCircle2, BarChart3, Settings as SettingsIcon, Plus, Sparkles, ChevronLeft, ChevronRight, Edit2, Info, User, PlusCircle, Award, MessageSquareText } from 'lucide-react';
-import { Habit } from './types';
-import HabitList from './components/HabitList';
-import Dashboard from './components/Dashboard';
-import Settings from './components/Settings';
-import About from './components/About';
-import Badges from './components/Badges';
-import AskGemini from './components/AskGemini';
+import React, { useState, useEffect, useCallback } from 'react';
+import { Layout, CheckCircle2, BarChart3, Settings as SettingsIcon, Plus, Sparkles, ChevronLeft, ChevronRight, User, Award, MessageSquareText } from 'lucide-react';
+import { Habit } from './types.ts';
+import HabitList from './components/HabitList.tsx';
+import Dashboard from './components/Dashboard.tsx';
+import Settings from './components/Settings.tsx';
+import About from './components/About.tsx';
+import Badges from './components/Badges.tsx';
+import AskGemini from './components/AskGemini.tsx';
 
 const STORAGE_KEY = 'super_habit_tracker_v6_2026';
 const SETTINGS_KEY = 'super_habit_tracker_settings';
@@ -36,32 +35,29 @@ const App: React.FC = () => {
 
   // Initialize data
   useEffect(() => {
-    const savedHabits = localStorage.getItem(STORAGE_KEY);
-    const savedSettings = localStorage.getItem(SETTINGS_KEY);
-    
-    if (savedHabits) {
-      try {
+    try {
+      const savedHabits = localStorage.getItem(STORAGE_KEY);
+      const savedSettings = localStorage.getItem(SETTINGS_KEY);
+      
+      if (savedHabits) {
         setHabits(JSON.parse(savedHabits));
-      } catch (e) {
+      } else {
         setHabits(DEFAULT_HABITS);
       }
-    } else {
-      setHabits(DEFAULT_HABITS);
-    }
 
-    if (savedSettings) {
-      try {
+      if (savedSettings) {
         const settings = JSON.parse(savedSettings);
         setUserName(settings.userName || 'Super User');
         setUserIcon(settings.userIcon || 'User');
         setThemeColor(settings.themeColor || '#9333ea');
         setAppIcon(settings.appIcon || 'Sparkles');
-      } catch (e) {
-        console.error("Failed to load settings");
       }
+    } catch (e) {
+      console.warn("Storage load failed, using defaults", e);
+      setHabits(DEFAULT_HABITS);
+    } finally {
+      setIsLoaded(true);
     }
-    
-    setIsLoaded(true);
   }, []);
 
   // Save data
@@ -129,12 +125,12 @@ const App: React.FC = () => {
     }
   };
 
-  if (!isLoaded) return null;
+  if (!isLoaded) return <div className="h-full w-full bg-slate-50 flex items-center justify-center font-bold text-slate-400">LOADING...</div>;
 
   return (
-    <div className="min-h-screen bg-slate-50 flex flex-col max-w-md mx-auto relative shadow-2xl pb-24 overflow-hidden">
-      {/* Header */}
-      <header className="p-6 bg-white border-b border-slate-100 sticky top-0 z-10">
+    <div className="h-full w-full bg-slate-50 flex flex-col max-w-md mx-auto relative shadow-2xl overflow-hidden">
+      {/* Fixed Header */}
+      <header className="p-6 bg-white border-b border-slate-100 flex-shrink-0 z-10">
         <div className="flex items-center justify-between mb-2">
           <div className="flex items-center gap-2">
             <div 
@@ -160,7 +156,7 @@ const App: React.FC = () => {
         </div>
 
         {(activeTab === 'track' || activeTab === 'stats') && (
-          <div className="flex items-center justify-between mt-4 bg-slate-50 p-2 rounded-2xl animate-in fade-in zoom-in-95 duration-300">
+          <div className="flex items-center justify-between mt-4 bg-slate-50 p-2 rounded-2xl">
             <button 
               onClick={() => changeMonth(-1)}
               disabled={viewDate.getMonth() === 0}
@@ -183,7 +179,8 @@ const App: React.FC = () => {
         )}
       </header>
 
-      <main className="flex-1 overflow-y-auto">
+      {/* Main Content Area - Fully Scrollable */}
+      <main className="flex-1 overflow-y-auto no-scrollbar scroll-container bg-slate-50">
         {activeTab === 'track' && (
           <HabitList 
             habits={habits} 
@@ -235,8 +232,8 @@ const App: React.FC = () => {
         {activeTab === 'about' && <About themeColor={themeColor} />}
       </main>
 
-      {/* Improved Bottom Navigation Menu */}
-      <nav className="fixed bottom-0 w-full max-w-md bg-white/80 backdrop-blur-md border-t border-slate-100 px-2 py-3 flex justify-around items-center z-20">
+      {/* Fixed Bottom Navigation */}
+      <nav className="flex-shrink-0 bg-white/80 backdrop-blur-md border-t border-slate-100 px-2 py-3 pb-[calc(12px+env(safe-area-inset-bottom))] flex justify-around items-center z-20">
         <NavButton 
           active={activeTab === 'track'} 
           onClick={() => setActiveTab('track')} 

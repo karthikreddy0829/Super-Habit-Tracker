@@ -1,8 +1,6 @@
-
 import React, { useMemo, useState } from 'react';
-import { Habit } from '../types';
-import { BarChart, Bar, XAxis, YAxis, ResponsiveContainer, Cell, Tooltip } from 'recharts';
-import { TrendingUp, Flame, Percent, Filter, Activity, Globe, Award, Calendar } from 'lucide-react';
+import { Habit } from '../types.ts';
+import { Award, Flame, Filter, Calendar } from 'lucide-react';
 
 interface DashboardProps {
   habits: Habit[];
@@ -104,14 +102,12 @@ const Dashboard: React.FC<DashboardProps> = ({ habits, monthYearKey, year, month
   }, [habitStats]);
 
   return (
-    <div className="p-6 space-y-8 animate-in fade-in duration-500 pb-20">
-      
-      {/* 1. Overall Summary Section */}
+    <div className="p-6 space-y-8 animate-in fade-in duration-500 pb-32">
       <section className="grid grid-cols-2 gap-4">
         <div className="bg-white p-5 rounded-[32px] border border-slate-100 shadow-sm relative overflow-hidden group">
           <div className="flex flex-col relative z-10">
             <span className="text-3xl font-black text-slate-900 leading-none">{averageConsistency}%</span>
-            <span className="text-[10px] text-slate-400 font-black uppercase tracking-widest mt-2">Overall Consistency</span>
+            <span className="text-[10px] text-slate-400 font-black uppercase tracking-widest mt-2">Consistency</span>
           </div>
           <div className="absolute -bottom-2 -right-2 opacity-5" style={{ color: themeColor }}>
             <Award size={64} />
@@ -120,7 +116,7 @@ const Dashboard: React.FC<DashboardProps> = ({ habits, monthYearKey, year, month
         <div className="bg-white p-5 rounded-[32px] border border-slate-100 shadow-sm relative overflow-hidden group">
           <div className="flex flex-col relative z-10">
             <span className="text-3xl font-black text-slate-900 leading-none">{activeStreaks.length}</span>
-            <span className="text-[10px] text-slate-400 font-black uppercase tracking-widest mt-2">Active Streaks</span>
+            <span className="text-[10px] text-slate-400 font-black uppercase tracking-widest mt-2">Streaks</span>
           </div>
           <div className="absolute -bottom-2 -right-2 opacity-5 text-orange-500">
             <Flame size={64} />
@@ -128,7 +124,6 @@ const Dashboard: React.FC<DashboardProps> = ({ habits, monthYearKey, year, month
         </div>
       </section>
 
-      {/* 2. Streak Gallery (New Section) */}
       <section>
         <h3 className="text-xs font-black text-slate-400 uppercase tracking-[0.2em] mb-4 flex items-center gap-2 px-1">
           <Flame size={14} className="text-orange-500" /> Active Streaks
@@ -144,16 +139,15 @@ const Dashboard: React.FC<DashboardProps> = ({ habits, monthYearKey, year, month
             </div>
           )) : (
             <div className="w-full text-center py-6 bg-slate-100 rounded-3xl border border-dashed border-slate-200">
-              <span className="text-xs font-bold text-slate-400 uppercase tracking-widest">No active streaks yet!</span>
+              <span className="text-xs font-bold text-slate-400 uppercase tracking-widest">No active streaks!</span>
             </div>
           )}
         </div>
       </section>
 
-      {/* 3. Deep-Dive Section */}
       <section>
         <h3 className="text-xs font-black text-slate-400 uppercase tracking-[0.2em] mb-4 flex items-center gap-2 px-1">
-          <Filter size={14} style={{ color: themeColor }} /> Habit Analysis
+          <Filter size={14} style={{ color: themeColor }} /> Analysis
         </h3>
         <div className="bg-white p-6 rounded-[32px] border border-slate-100 shadow-sm space-y-6">
           <select 
@@ -186,10 +180,9 @@ const Dashboard: React.FC<DashboardProps> = ({ habits, monthYearKey, year, month
         </div>
       </section>
 
-      {/* 4. Organized Habit Progress List (Replacement for messy chart) */}
       <section>
         <h3 className="text-xs font-black text-slate-400 uppercase tracking-[0.2em] mb-4 flex items-center gap-2 px-1">
-          <Calendar size={14} className="text-slate-400" /> Progress List
+          <Calendar size={14} className="text-slate-400" /> Progress
         </h3>
         <div className="space-y-3">
           {habitStats.map((habit) => (
@@ -211,12 +204,6 @@ const Dashboard: React.FC<DashboardProps> = ({ habits, monthYearKey, year, month
                     />
                   </div>
                 </div>
-                {habit.streak > 0 && (
-                  <div className="flex items-center gap-1 px-2 py-1 bg-orange-50 text-orange-600 rounded-lg text-[10px] font-black">
-                    <Flame size={10} fill="currentColor" />
-                    {habit.streak}
-                  </div>
-                )}
               </div>
             </div>
           ))}

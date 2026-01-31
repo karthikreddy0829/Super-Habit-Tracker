@@ -1,7 +1,6 @@
-
 import React from 'react';
-import { User, Palette, Sparkles, Zap, Target, Book, Smile, Heart, Star, Share2, FileText, Send } from 'lucide-react';
-import { Habit } from '../types';
+import { User, Palette, Sparkles, Zap, Target, Book, Smile, Heart, Star, Share2, FileText } from 'lucide-react';
+import { Habit } from '../types.ts';
 
 interface SettingsProps {
   userName: string;
@@ -55,22 +54,20 @@ const Settings: React.FC<SettingsProps> = ({
         console.error('Share failed', err);
       }
     } else {
-      // Fallback: Copy to clipboard
       navigator.clipboard.writeText(text);
-      alert('Report copied to clipboard! You can now paste it into WhatsApp or Email.');
+      alert('Report copied to clipboard!');
     }
   };
 
   return (
-    <div className="p-6 space-y-8 animate-in fade-in slide-in-from-right-4 duration-500 pb-12">
-      
+    <div className="p-6 space-y-8 animate-in fade-in slide-in-from-right-4 duration-500 pb-32">
       <section>
         <h2 className="text-xs font-black text-slate-400 uppercase tracking-widest mb-4 flex items-center gap-2">
           <Share2 size={14} /> Analysis & Export
         </h2>
         <div className="bg-white p-6 rounded-3xl border border-slate-100 shadow-sm space-y-4">
           <p className="text-[10px] font-bold text-slate-400 uppercase leading-relaxed">
-            Generate a full analysis of your consistency to share with your coach or friends via WhatsApp or Email.
+            Generate a full analysis of your consistency to share with your coach.
           </p>
           <button 
             onClick={handleShare}
@@ -99,7 +96,7 @@ const Settings: React.FC<SettingsProps> = ({
             />
           </div>
           <div>
-            <label className="text-xs font-bold text-slate-500 mb-2 block">User Avatar</label>
+            <label className="text-xs font-bold text-slate-500 mb-2 block">Avatar</label>
             <div className="flex gap-4">
               {USER_ICONS.map(icon => (
                 <button 
@@ -125,7 +122,7 @@ const Settings: React.FC<SettingsProps> = ({
         </h2>
         <div className="bg-white p-6 rounded-3xl border border-slate-100 shadow-sm space-y-6">
           <div>
-            <label className="text-xs font-bold text-slate-500 mb-4 block">Theme Accent</label>
+            <label className="text-xs font-bold text-slate-500 mb-4 block">Accent Color</label>
             <div className="grid grid-cols-3 gap-3">
               {THEME_COLORS.map(color => (
                 <button
@@ -135,25 +132,6 @@ const Settings: React.FC<SettingsProps> = ({
                 >
                   <div className="w-6 h-6 rounded-full shadow-inner" style={{ backgroundColor: color.hex }} />
                   <span className="text-[9px] font-black uppercase text-slate-500">{color.name.split(' ')[1]}</span>
-                </button>
-              ))}
-            </div>
-          </div>
-
-          <div>
-            <label className="text-xs font-bold text-slate-500 mb-4 block">App Symbol</label>
-            <div className="flex gap-4">
-              {APP_ICONS.map(icon => (
-                <button 
-                  key={icon}
-                  onClick={() => setAppIcon(icon)}
-                  className={`w-12 h-12 rounded-2xl flex items-center justify-center transition-all ${appIcon === icon ? 'text-white shadow-lg' : 'bg-slate-50 text-slate-400 hover:bg-slate-100'}`}
-                  style={{ backgroundColor: appIcon === icon ? themeColor : undefined }}
-                >
-                  {icon === 'Sparkles' && <Sparkles size={20} />}
-                  {icon === 'Zap' && <Zap size={20} />}
-                  {icon === 'Target' && <Target size={20} />}
-                  {icon === 'Book' && <Book size={20} />}
                 </button>
               ))}
             </div>

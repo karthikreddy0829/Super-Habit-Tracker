@@ -1,10 +1,9 @@
-
 import React from 'react';
 import { Sparkles, Heart, Coffee } from 'lucide-react';
 
 const About: React.FC<{ themeColor: string }> = ({ themeColor }) => {
   return (
-    <div className="p-6 space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-700 pb-12">
+    <div className="p-6 space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-700 pb-32">
       <div className="flex flex-col items-center text-center space-y-4 pt-10">
         <div className="w-20 h-20 rounded-3xl flex items-center justify-center text-white shadow-2xl mb-4" style={{ backgroundColor: themeColor }}>
           <Sparkles size={40} />

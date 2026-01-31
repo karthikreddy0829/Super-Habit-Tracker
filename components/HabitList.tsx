@@ -1,6 +1,5 @@
-
 import React, { useState } from 'react';
-import { Habit } from '../types';
+import { Habit } from '../types.ts';
 import { Edit2, Check, Coffee, PlusCircle, Trash2, X } from 'lucide-react';
 
 interface HabitListProps {
@@ -32,7 +31,7 @@ const HabitList: React.FC<HabitListProps> = ({ habits, monthYearKey, year, month
   };
 
   return (
-    <div className="py-4 space-y-6">
+    <div className="py-4 space-y-6 pb-32">
       {habits.map((habit) => (
         <HabitItem 
           key={habit.id} 
@@ -48,10 +47,9 @@ const HabitList: React.FC<HabitListProps> = ({ habits, monthYearKey, year, month
         />
       ))}
 
-      {/* Add New Habit Button/Form */}
       <div className="px-4 pt-4">
         {isAdding ? (
-          <div className="bg-white p-4 rounded-3xl border border-slate-100 shadow-sm animate-in zoom-in-95 duration-200">
+          <div className="bg-white p-4 rounded-3xl border border-slate-100 shadow-sm">
             <div className="flex items-center justify-between mb-4">
               <span className="text-xs font-black uppercase text-slate-400 tracking-widest">New Habit</span>
               <button onClick={() => setIsAdding(false)} className="text-slate-300 hover:text-slate-500">
@@ -86,8 +84,6 @@ const HabitList: React.FC<HabitListProps> = ({ habits, monthYearKey, year, month
           </button>
         )}
       </div>
-
-      <div className="h-4" />
     </div>
   );
 };
@@ -123,7 +119,7 @@ const HabitItem: React.FC<{
     <div className="px-4 group animate-in fade-in slide-in-from-left-4 duration-500">
       <div className="flex items-center justify-between mb-3 px-2">
         {isEditing ? (
-          <div className="flex flex-col gap-2 w-full bg-slate-100 p-3 rounded-2xl border border-slate-200 animate-in fade-in slide-in-from-top-2 duration-200 shadow-inner">
+          <div className="flex flex-col gap-2 w-full bg-slate-100 p-3 rounded-2xl border border-slate-200 shadow-inner">
             <div className="flex items-center gap-2">
               <input 
                 type="text" 
